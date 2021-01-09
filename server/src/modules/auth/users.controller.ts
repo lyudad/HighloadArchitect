@@ -14,16 +14,16 @@ import {
   
     @Post('/signup')
     signUp(
-      @Body(ValidationPipe) authCredentialsDto: any,
+      @Body(ValidationPipe) authData: any,
     ): Promise<any> {
-       return this.authService.signUp(authCredentialsDto);
+       return this.authService.signUp(authData);
     }
   
     @Post('/login')
     login(
-      @Body(ValidationPipe) authCredentialsDto: any,
+      @Body(ValidationPipe) loginData: {email: string, password: string},
     ): Promise<any> {
-       return this.authService.findByName(authCredentialsDto);
+       return this.authService.findByName(loginData);
     }
   
     @Get('/')

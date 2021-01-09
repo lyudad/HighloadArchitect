@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { UsersModule } from './modules/auth/users.module';
 import {User} from "./modules/auth/users.entity"
 
 @Module({
@@ -14,6 +15,7 @@ import {User} from "./modules/auth/users.entity"
       entities: [User],
       synchronize: true,
     }),
+    UsersModule
   ],
 })
 export class AppModule {}
