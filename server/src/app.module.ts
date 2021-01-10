@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from './modules/auth/users.module';
 import {User} from "./modules/auth/users.entity"
+import {PassportModule} from '@nestjs/passport';
 
 @Module({
   imports: [
@@ -15,7 +16,8 @@ import {User} from "./modules/auth/users.entity"
       entities: [User],
       synchronize: true,
     }),
-    UsersModule
+    UsersModule,
+    PassportModule.register({defaultStrategy: 'jwt'}),
   ],
 })
 export class AppModule {}

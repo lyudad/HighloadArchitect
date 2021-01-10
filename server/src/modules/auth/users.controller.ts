@@ -4,31 +4,47 @@ import {
     Post,
     Get,
     ValidationPipe,
+    UseGuards,
+    Request
   } from '@nestjs/common';
-  import { UsersService } from './users.service';
+import { AuthGuard } from '@nestjs/passport';
+import * as jwt from 'jsonwebtoken'
+import { JwtService } from '@nestjs/jwt';
+import { UsersService } from './users.service';
   
  
   @Controller('auth')
   export class UsersController {
-    constructor(private authService: UsersService) {}
+      
+    constructor(
+        private authService: UsersService,
+        private jwtService: JwtService
+    ) {}
   
     @Post('/signup')
-    signUp(
+    async signUp(
       @Body(ValidationPipe) authData: any,
     ): Promise<any> {
-       return this.authService.signUp(authData);
+       const user = await this.authService.signUp(authData);
+       const token = this.jwtService.sign({...user})
+        return user ? {token} : {error: true, message: "user not found"}
     }
   
     @Post('/login')
-    login(
+    async login(
       @Body(ValidationPipe) loginData: {email: string, password: string},
     ): Promise<any> {
-       return this.authService.findByName(loginData);
+        const user = await this.authService.findByName(loginData);
+        const token = this.jwtService.sign({...user})
+        return user ? {token} : {error: true, message: "user not found"}
     }
   
     @Get('/')
-    getUser() {
-      return this.authService.findAll();
+    @UseGuards(AuthGuard('jwt'))
+    getUser(
+        @Request() req
+    ) {
+        return req.user;
     }
   
   }

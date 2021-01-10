@@ -1,5 +1,10 @@
-import React from 'react';
+import React, {useEffect} from 'react';
+import axios from 'axios';
 import { useForm } from "react-hook-form";
+
+import {
+    useMutation
+  } from "react-query";
 
 type Inputs = {
     email: string,
@@ -7,10 +12,20 @@ type Inputs = {
 };
 
 export default function Login() {
-    const { register, handleSubmit, watch, errors } = useForm<Inputs>();
-    const onSubmit = (data: Inputs) => console.log(data);
+    const loginUserMutation = useMutation((registrationData: Inputs) => axios.post('http://127.0.0.1:8000/auth/login', registrationData))
+console.log("loginUserMutation>", loginUserMutation)
+    useEffect(() => {
+        console.log("loginUserMutation.data?.data.token", loginUserMutation.data?.data.token)
+        localStorage.setItem('token', loginUserMutation.data?.data.token);
+    }, [loginUserMutation.data?.data?.token])
 
-    console.log(watch("example")) // watch input value by passing the name of it
+    const { register, handleSubmit, watch, errors } = useForm<Inputs>();
+    
+
+    const onSubmit = (data: Inputs) => {
+        console.log('data,', data)
+        loginUserMutation.mutate(data)
+    }
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
