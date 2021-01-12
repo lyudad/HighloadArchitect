@@ -35,6 +35,7 @@ import { UsersService } from './users.service';
       @Body(ValidationPipe) loginData: {email: string, password: string},
     ): Promise<any> {
         const user = await this.authService.findByName(loginData);
+        console.log('user', user)
         const token = this.jwtService.sign({...user})
         return user ? {token} : {error: true, message: "user not found"}
     }
