@@ -1,9 +1,8 @@
 import { Injectable } from '@nestjs/common';
- import { InjectRepository } from '@nestjs/typeorm';
-// import { Repository } from 'typeorm';
-import { User } from './users.entity';
 import {MysqlHelper} from '../../helpers/mysql'
+import * as bcrypt from 'bcrypt'
 
+const saltRounds = 10;
 @Injectable()
 export class UsersService {
   constructor(
@@ -18,14 +17,16 @@ export class UsersService {
     return this.usersRepository.query(`Select * from users where id=? LIMIT 1`, [id], true);
   }
 
-  signUp(data: any): Promise<any> {
+  async signUp(data: any): Promise<any> {
     const fields = ['firstName', 'lastName', 'age', 'gender', 'interests', 'city', 'email', 'password'] 
-    const values = [data.firstName, data.lastName, data.age, data.gender, data.interests, data.city, data.email, data.password] 
+    const passwordEncrypted = await bcrypt.hash(data.password, saltRounds);
+    const values = [data.firstName, data.lastName, data.age, data.gender, data.interests, data.city, data.email, passwordEncrypted] 
     return this.usersRepository.query(`INSERT INTO users (??) VALUES (?)`, [fields, values] )
   }
 
-  findByName(data: {email: string, password: string}): Promise<any> {
-    return this.usersRepository.query<string>(`SELECT * FROM users WHERE email=? AND password=? LIMIT 1`, [data.email, data.password], true)
+  async findByEmail(data: {email: string, password: string}): Promise<any> {
+    const passwordEncrypted = await bcrypt.hash(data.password, saltRounds);
+    return this.usersRepository.query<string>(`SELECT * FROM users WHERE email=? AND password=? LIMIT 1`, [data.email, passwordEncrypted], true)
   }
 
   async remove(id: string): Promise<void> {
