@@ -25,8 +25,14 @@ export class UsersService {
   }
 
   async findByEmail(data: {email: string, password: string}): Promise<any> {
-    const passwordEncrypted = await bcrypt.hash(data.password, saltRounds);
-    return this.usersRepository.query<string>(`SELECT * FROM users WHERE email=? AND password=? LIMIT 1`, [data.email, passwordEncrypted], true)
+    const user: any = await this.usersRepository.query<string>(`SELECT * FROM users WHERE email=? LIMIT 1`, [data.email], true)
+    if(await bcrypt.compare(data.password, user.password)){
+      return true;
+    } else {
+      return null;
+    }
+
+    //return this.usersRepository.query<string>(`SELECT * FROM users WHERE email=? AND password=? LIMIT 1`, [data.email, passwordEncrypted], true)
   }
 
   async remove(id: string): Promise<void> {
