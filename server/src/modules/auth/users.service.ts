@@ -21,13 +21,15 @@ export class UsersService {
     const fields = ['firstName', 'lastName', 'age', 'gender', 'interests', 'city', 'email', 'password'] 
     const passwordEncrypted = await bcrypt.hash(data.password, saltRounds);
     const values = [data.firstName, data.lastName, data.age, data.gender, data.interests, data.city, data.email, passwordEncrypted] 
-    return this.usersRepository.query(`INSERT INTO users (??) VALUES (?)`, [fields, values] )
+    const res = await this.usersRepository.query(`INSERT INTO users (??) VALUES (?)`, [fields, values] )
+    console.log('res', res)
+    return this.usersRepository.query<string>(`SELECT * FROM users WHERE email=? and password=? LIMIT 1`, [data.email, passwordEncrypted], true)
   }
 
   async findByEmail(data: {email: string, password: string}): Promise<any> {
     const user: any = await this.usersRepository.query<string>(`SELECT * FROM users WHERE email=? LIMIT 1`, [data.email], true)
     if(await bcrypt.compare(data.password, user.password)){
-      return true;
+      return user;
     } else {
       return null;
     }

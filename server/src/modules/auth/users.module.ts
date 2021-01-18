@@ -12,7 +12,7 @@ import {MysqlHelper} from '../../helpers/mysql'
         // TypeOrmModule.forFeature([User]),
         JwtModule.register({
             secret: 'TOKEN_KEY',
-            signOptions: { expiresIn: '60s' },
+            signOptions: { expiresIn: '24h' },
           }),
     ],
     // exports: [TypeOrmModule],

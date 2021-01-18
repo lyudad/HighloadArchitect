@@ -1,5 +1,6 @@
 import React, {useEffect} from 'react';
 import axios from 'axios';
+import { useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
 import {
@@ -12,16 +13,19 @@ type Inputs = {
 };
 
 export default function Login() {
-    const loginUserMutation = useMutation((registrationData: Inputs) => axios.post('http://127.0.0.1:8000/auth/login', registrationData))
-console.log("loginUserMutation>", loginUserMutation)
+    let history = useHistory();
+    const loginUserMutation = useMutation((registrationData: Inputs) => axios.post('http://ec2-52-59-247-125.eu-central-1.compute.amazonaws.com:8000/auth/login', registrationData))
+
     useEffect(() => {
-        console.log("loginUserMutation.data?.data.token", loginUserMutation.data?.data.token)
-        localStorage.setItem('token', loginUserMutation.data?.data.token);
+        if(loginUserMutation.data?.data.token){
+            console.log("loginUserMutation.data?.data.token", loginUserMutation.data?.data.token)
+            localStorage.setItem('token', loginUserMutation.data?.data.token);
+            setTimeout(() => history.push("/"), 1000);
+        }
     }, [loginUserMutation.data?.data?.token])
 
     const { register, handleSubmit, watch, errors } = useForm<Inputs>();
     
-
     const onSubmit = (data: Inputs) => {
         console.log('data,', data)
         loginUserMutation.mutate(data)
