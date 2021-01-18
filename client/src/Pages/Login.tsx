@@ -2,6 +2,8 @@ import React, {useEffect} from 'react';
 import axios from 'axios';
 import { useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import {
     useMutation
@@ -20,7 +22,8 @@ export default function Login() {
         if(loginUserMutation.data?.data.token){
             console.log("loginUserMutation.data?.data.token", loginUserMutation.data?.data.token)
             localStorage.setItem('token', loginUserMutation.data?.data.token);
-            setTimeout(() => history.push("/"), 1000);
+            notify();
+            setTimeout(() => history.push("/"), 3000);
         }
     }, [loginUserMutation.data?.data?.token])
 
@@ -31,21 +34,26 @@ export default function Login() {
         loginUserMutation.mutate(data)
     }
 
+    const notify = () => toast("you login success!");
+
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <div>
-                <label htmlFor="email">Email</label>
-                <input id="email" name="email" ref={register({ required: true })}/>
-                {errors.email && <span>This field is required</span>}
-            </div>
+        <>
+            <ToastContainer />
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <div>
+                    <label htmlFor="email">Email</label>
+                    <input id="email" name="email" ref={register({ required: true })}/>
+                    {errors.email && <span>This field is required</span>}
+                </div>
 
-            <div>
-                <label htmlFor="password">Password</label>
-                <input id="password" name="password" type="password" ref={register({ required: true })} />
-                {errors.password && <span>This field is required</span>}
-            </div>
+                <div>
+                    <label htmlFor="password">Password</label>
+                    <input id="password" name="password" type="password" ref={register({ required: true })} />
+                    {errors.password && <span>This field is required</span>}
+                </div>
 
-            <input type="submit" />
-        </form>
+                <input type="submit" />
+            </form>
+        </>
     );
 }
