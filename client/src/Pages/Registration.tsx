@@ -30,6 +30,7 @@ export default function Registration() {
     )
 
     useEffect(() => {
+        console.log("registerUserMutation.data", registerUserMutation.data)
         if (registerUserMutation.data?.data.token) {
             localStorage.setItem('token', registerUserMutation.data?.data.token);
             notify();
@@ -91,7 +92,7 @@ export default function Registration() {
 
                 <div>
                     <label htmlFor="email">Email</label>
-                    <input id="email" name="email" ref={register({ required: true })} />
+                    <input id="email" name="email" type="email"  ref={register({ required: true })} />
                     {errors.email && <span>This field is required</span>}
                 </div>
 

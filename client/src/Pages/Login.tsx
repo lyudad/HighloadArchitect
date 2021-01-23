@@ -8,7 +8,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import {
     useMutation
   } from "react-query";
-  
+
 import { apiPath } from '../Consts/api';
 
 type Inputs = {
@@ -29,6 +29,13 @@ export default function Login() {
         }
     }, [loginUserMutation.data?.data?.token])
 
+    useEffect(() => {
+        if(loginUserMutation.data?.data.error){
+            console.log("loginUserMutation.data?.data.token", loginUserMutation.data?.data.error)
+            notifyError();
+        }
+    }, [loginUserMutation.data?.data?.error])
+
     const { register, handleSubmit, watch, errors } = useForm<Inputs>();
     
     const onSubmit = (data: Inputs) => {
@@ -38,13 +45,15 @@ export default function Login() {
 
     const notify = () => toast("you login success!");
 
+    const notifyError = () => toast("login or password is wrong!");
+
     return (
         <>
             <ToastContainer />
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div>
                     <label htmlFor="email">Email</label>
-                    <input id="email" name="email" ref={register({ required: true })}/>
+                    <input id="email" name="email" type="email" ref={register({ required: true })}/>
                     {errors.email && <span>This field is required</span>}
                 </div>
 
