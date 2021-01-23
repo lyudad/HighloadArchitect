@@ -9,6 +9,8 @@ import {
     useMutation
 } from "react-query";
 
+import { apiPath } from '../Consts/api';
+
 type Inputs = {
     firstName: string,
     lastName: string,
@@ -24,7 +26,7 @@ export default function Registration() {
     let history = useHistory();
 
     const registerUserMutation = useMutation(
-        (registrationData: Inputs) => axios.post('http://ec2-52-59-247-125.eu-central-1.compute.amazonaws.com:8000/auth/signup', registrationData),
+        (registrationData: Inputs) => axios.post(`${apiPath}/auth/signup`, registrationData),
     )
 
     useEffect(() => {

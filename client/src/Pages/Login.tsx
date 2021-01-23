@@ -8,6 +8,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import {
     useMutation
   } from "react-query";
+  
+import { apiPath } from '../Consts/api';
 
 type Inputs = {
     email: string,
@@ -16,7 +18,7 @@ type Inputs = {
 
 export default function Login() {
     let history = useHistory();
-    const loginUserMutation = useMutation((registrationData: Inputs) => axios.post('http://ec2-52-59-247-125.eu-central-1.compute.amazonaws.com:8000/auth/login', registrationData))
+    const loginUserMutation = useMutation((registrationData: Inputs) => axios.post(`${apiPath}/auth/login`, registrationData))
 
     useEffect(() => {
         if(loginUserMutation.data?.data.token){

@@ -1,11 +1,12 @@
 import React, {useEffect} from 'react';
 import axios from 'axios';
 import { useQuery } from 'react-query';
+import { apiPath } from '../Consts/api';
 
 export default function Home() {
   const { isLoading, error, data, isFetching } = useQuery("userData", () => {
     console.log('localStorage.getItem(', localStorage.getItem('token'))
-     return axios.get('http://ec2-52-59-247-125.eu-central-1.compute.amazonaws.com:8000/auth', {
+     return axios.get(`${apiPath}/auth`, {
        headers: {'authorization': `Bearer ${localStorage.getItem('token')}`}
      }
     )},
