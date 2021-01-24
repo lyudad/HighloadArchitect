@@ -28,6 +28,7 @@ export class UsersService {
 
   async findByEmail(data: {email: string, password: string}): Promise<any> {
     const user: any = await this.usersRepository.query<string>(`SELECT * FROM users WHERE email=? LIMIT 1`, [data.email], true)
+    console.log('user>>>', user)
     if(user && await bcrypt.compare(data.password, user.password)){
       return user;
     } else {

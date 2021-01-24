@@ -16,7 +16,9 @@ export default function Home() {
   );
 
   useEffect(()=> {
-    localStorage.removeItem("token")
+    if(error){
+      localStorage.removeItem("token")
+    }  
   }, [error])
 
   console.log('data>>>>>>>>>', error, data)
