@@ -47,6 +47,14 @@ import { UsersService } from './users.service';
     ) {
         return req.user;
     }
+
+    @Get('/profiles')
+    @UseGuards(AuthGuard('jwt'))
+    getProfiles(
+        @Request() req
+    ) {
+      return this.authService.findAll(req.user.id);
+    }
   
   }
   

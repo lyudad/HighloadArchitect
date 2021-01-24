@@ -9,14 +9,17 @@ import {
     useMutation
   } from "react-query";
 
-import { apiPath } from '../Consts/api';
+import { apiPath } from 'Consts/api';
 
 type Inputs = {
     email: string,
     password: string,
 };
+interface LoginProps{
+    updateAuth: (updatedValue: boolean) => void
+}
 
-export default function Login() {
+const Login: React.FunctionComponent<LoginProps> = ({updateAuth}) => {
     let history = useHistory();
     const loginUserMutation = useMutation((registrationData: Inputs) => axios.post(`${apiPath}/auth/login`, registrationData))
 
@@ -25,6 +28,7 @@ export default function Login() {
             console.log("loginUserMutation.data?.data.token", loginUserMutation.data?.data.token)
             localStorage.setItem('token', loginUserMutation.data?.data.token);
             notify();
+            updateAuth(true)
             setTimeout(() => history.push("/"), 3000);
         }
     }, [loginUserMutation.data?.data?.token])
@@ -68,3 +72,5 @@ export default function Login() {
         </>
     );
 }
+
+export default Login

@@ -9,7 +9,7 @@ import {
     useMutation
 } from "react-query";
 
-import { apiPath } from '../Consts/api';
+import { apiPath } from 'Consts/api';
 
 type Inputs = {
     firstName: string,

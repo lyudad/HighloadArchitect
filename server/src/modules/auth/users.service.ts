@@ -9,8 +9,8 @@ export class UsersService {
     private usersRepository: MysqlHelper,
   ) {}
 
-  async findAll(): Promise<any> {
-    return this.usersRepository.query('Select * from users');
+  async findAll(id: number): Promise<any> {
+    return this.usersRepository.query('Select * from users Where id!=?', [id]);
   }
 
   findOne(id: string): Promise<any> {

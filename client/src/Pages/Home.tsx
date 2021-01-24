@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import axios from 'axios';
 import { useQuery } from 'react-query';
-import { apiPath } from '../Consts/api';
+import { apiPath } from 'Consts/api';
 
 export default function Home() {
   const { isLoading, error, data, isFetching } = useQuery("userData", () => {
