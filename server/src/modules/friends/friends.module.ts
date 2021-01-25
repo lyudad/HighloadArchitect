@@ -3,6 +3,7 @@ import { FriendsController } from './friends.controller';
 import { FriendsService } from './friends.service';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from '../auth/jwt.strategy';
+import { UsersService } from '../auth/users.service';
 import {MysqlHelper} from '../../helpers/mysql'
 
 @Module({
@@ -12,7 +13,7 @@ import {MysqlHelper} from '../../helpers/mysql'
             signOptions: { expiresIn: '24h' },
           }),
     ],
-    providers: [FriendsService, JwtStrategy, MysqlHelper],
+    providers: [FriendsService, JwtStrategy, MysqlHelper, UsersService],
     controllers: [FriendsController],
 })
 export class FriendsModule {}

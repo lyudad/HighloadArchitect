@@ -8,7 +8,6 @@ import {
     Request
   } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import * as bcrypt from 'bcrypt'
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from './users.service';
   
