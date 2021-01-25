@@ -10,6 +10,7 @@ export class UsersService {
   ) {}
 
   async findAll(id: number): Promise<any> {
+    console.log("id", id)
     return this.usersRepository.query('Select * from users Where id!=?', [id]);
   }
 

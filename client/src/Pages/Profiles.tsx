@@ -1,25 +1,21 @@
-import React, {useEffect} from 'react';
 import axios from 'axios';
-import { useHistory } from "react-router-dom";
-import { useForm } from "react-hook-form";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-
-import {
-    useMutation, useQuery
-  } from "react-query";
-
+import { useQuery } from "react-query";
 import { apiPath } from 'Consts/api';
 
-type Inputs = {
+export interface IUserInfo {
+    age: number,
+    city: string,
     email: string,
-    password: string,
-};
+    firstName: string,
+    gender: string,
+    interests: string,
+    lastName: string
+}
 
 export default function Login() {
-    const { isLoading, error, data, isFetching } = useQuery("userProfile", () => {
+    const { error, data } = useQuery("userProfile", () => {
         console.log('localStorage.getItem(', localStorage.getItem('token'))
-         return axios.get(`${apiPath}/profiles`, {
+         return axios.get(`${apiPath}/auth/profiles`, {
            headers: {'authorization': `Bearer ${localStorage.getItem('token')}`}
          }
         )},
@@ -28,11 +24,24 @@ export default function Login() {
          }
     );
 
-   console.log('data>>>>', data)
+   console.log('data>>>> profiles', data)
 
     return (
         <>
-           {data && <div>hkjhkjhkjhk</div>}
+           <div>All profiles</div>
+           {
+           data?.data.map((el: IUserInfo) => {
+               return (
+                <div style={{border: '1px solid black', padding: '20px'}}>
+                    <div>{el.firstName}</div>
+                    <div>{el.lastName}</div>
+                    <div>{el.gender}</div>
+                    <div>{el.city}</div>
+                    <div>{el.interests}</div>
+                </div>
+               )
+            })
+           }
         </>
     );
 }

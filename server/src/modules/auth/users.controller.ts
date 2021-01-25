@@ -53,6 +53,7 @@ import { UsersService } from './users.service';
     getProfiles(
         @Request() req
     ) {
+      console.log('req.user.id>>>', req.user.id)
       return this.authService.findAll(req.user.id);
     }
   
