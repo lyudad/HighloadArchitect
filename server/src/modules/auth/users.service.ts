@@ -42,4 +42,5 @@ export class UsersService {
   async remove(id: string): Promise<void> {
     await this.usersRepository.query<string>(`DELETE FROM users WHERE id=?`, [id]);
   }
+
 }

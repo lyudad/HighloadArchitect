@@ -24,8 +24,6 @@ export default function Login() {
          }
     );
 
-   console.log('data>>>> profiles', data)
-
     return (
         <>
            <div>All profiles</div>
@@ -38,6 +36,7 @@ export default function Login() {
                     <div>{el.gender}</div>
                     <div>{el.city}</div>
                     <div>{el.interests}</div>
+                    <div style={{background: 'gray'}}>Add to friend</div>
                 </div>
                )
             })
