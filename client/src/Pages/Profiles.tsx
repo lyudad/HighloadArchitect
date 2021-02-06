@@ -1,8 +1,9 @@
 import axios from 'axios';
-import { useQuery } from "react-query";
+import { useQuery, useMutation } from "react-query";
 import { apiPath } from 'Consts/api';
 
 export interface IUserInfo {
+    id: number,
     age: number,
     city: string,
     email: string,
@@ -24,6 +25,10 @@ export default function Login() {
          }
     );
 
+    const addToFriendsMutation = useMutation((friendId: number) => axios.post(`${apiPath}/friends`, {friendId}, {
+        headers: {'authorization': `Bearer ${localStorage.getItem('token')}`}
+      }))
+
     return (
         <>
            <div>All profiles</div>
@@ -36,7 +41,12 @@ export default function Login() {
                     <div>{el.gender}</div>
                     <div>{el.city}</div>
                     <div>{el.interests}</div>
-                    <div style={{background: 'gray'}}>Add to friend</div>
+                    <div 
+                       style={{background: 'gray'}} 
+                       onClick={()=>{addToFriendsMutation.mutate(el.id)}}
+                    >
+                        Add to friend
+                    </div>
                 </div>
                )
             })

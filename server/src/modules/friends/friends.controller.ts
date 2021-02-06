@@ -20,7 +20,7 @@ import { FriendsService } from './friends.service';
     @UseGuards(AuthGuard('jwt'))
     async addFriend(
       @Request() req,
-      @Body(ValidationPipe) friendId,
+      @Body(ValidationPipe) {friendId},
     ): Promise<any> {
         return await this.friendsService.add(req.user.id, friendId);
     }
