@@ -4,7 +4,8 @@ import {
     Post,
     ValidationPipe,
     UseGuards,
-    Request
+    Request,
+    Get
   } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { FriendsService } from './friends.service';
@@ -23,6 +24,14 @@ import { FriendsService } from './friends.service';
       @Body(ValidationPipe) {friendId},
     ): Promise<any> {
         return await this.friendsService.add(req.user.id, friendId);
+    }
+
+    @Get('/')
+    @UseGuards(AuthGuard('jwt'))
+    async getFriends(
+      @Request() req,
+    ): Promise<any> {
+        return await this.friendsService.findFriends(req.user.id);
     }
   }
   

@@ -16,4 +16,12 @@ export class FriendsService {
   async remove(id: string): Promise<void> {
     await this.friendsRepository.query<string>(`DELETE FROM friends WHERE id=?`, [id]);
   }
+
+  findFriends(id: string): Promise<any> {
+    return this.friendsRepository.query(`
+      Select users.* from friends
+      LEFT JOIN users on friends.friendId=users.id 
+      where friends.userId=? LIMIT 1 
+    `, [id]);
+  }
 }

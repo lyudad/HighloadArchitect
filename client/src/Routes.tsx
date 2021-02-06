@@ -7,19 +7,12 @@ import {
   Redirect
 } from "react-router-dom";
 
-import { QueryClient, QueryClientProvider } from 'react-query'
-import { ReactQueryDevtools } from 'react-query/devtools'
-import { useQuery } from 'react-query';
-import axios from 'axios';
-
 import Login from 'Pages/Login'
 import Registration from 'Pages/Registration'
 import Home from 'Pages/Home'
 import Profile from 'Pages/Profile'
 import Profiles from 'Pages/Profiles'
-import { apiPath } from 'Consts/api';
-
-const queryClient = new QueryClient()
+import Friends from 'Pages/Friends'
 
 const UserContext = React.createContext(false);
 
@@ -61,6 +54,9 @@ export default function Routes() {
                   <li>
                     <Link to="/profiles">Other profiles</Link>
                   </li>
+                  <li>
+                    <Link to="/friends">My friends</Link>
+                  </li>
               </>
             }
             <li>
@@ -80,6 +76,7 @@ export default function Routes() {
             </Route>
             <PrivateRoute path="/profile" component={Profile} />
             <PrivateRoute path="/profiles" component={Profiles} />
+            <PrivateRoute path="/friends" component={Friends} />
           </Switch>
         </div>
       </Router>
