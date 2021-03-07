@@ -5,16 +5,22 @@ import { Injectable } from '@nestjs/common';
 export class MysqlHelper {
     private connection;
     constructor(){
-        this.connection = mysql.createConnection({
+        this.connectDb();
+    }
+
+    public connectDb() {
+        this.connection  = mysql.createConnection({
             host: 'remotemysql.com',
             port: 3306,
             user: 'I0O15FzjcX',
             password: 'HMMu5XTRtp',
             database: 'I0O15FzjcX',
         });
-        
-        this.connection.connect();
-    }
+        this.connection.on('error', (err) => {
+            console.log('err connection', err)
+            this.connectDb()
+        }); // probably worth adding timeout / throttle / etc
+      }
 
     public query<T>(query: string, params: T[] | [] = [], isOne?: boolean){
         return new Promise((resolve, reject) => {
