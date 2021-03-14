@@ -48,6 +48,13 @@ export class UsersService {
     //return this.usersRepository.query<string>(`SELECT * FROM users WHERE email=? AND password=? LIMIT 1`, [data.email, passwordEncrypted], true)
   }
 
+  async searchByUserName(data: {firstName: string, lastName: string}): Promise<any> {
+    const users = await this.usersRepository.query<string>(`SELECT * FROM users where firstName LIKE '%?%' and lastName LIKE '%?%';`, [data.firstName, data.lastName])
+    return users;
+
+    //return this.usersRepository.query<string>(`SELECT * FROM users WHERE email=? AND password=? LIMIT 1`, [data.email, passwordEncrypted], true)
+  }
+
   async remove(id: string): Promise<void> {
     await this.usersRepository.query<string>(`DELETE FROM users WHERE id=?`, [id]);
   }

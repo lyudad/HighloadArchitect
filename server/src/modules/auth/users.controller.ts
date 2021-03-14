@@ -96,5 +96,12 @@ const city = [
       }
       return resUsers
     }
+
+    @Post('/search')
+    async searchUsers(
+      @Body(ValidationPipe) searchData: {firstName: string, lastName: string},
+    ) {
+        await this.authService.searchByUserName(searchData)
+    }
   }
   

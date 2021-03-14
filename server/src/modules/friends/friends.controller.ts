@@ -14,7 +14,7 @@ import { FriendsService } from './friends.service';
   export class FriendsController {
       
     constructor(
-        private friendsService: FriendsService
+        private friendsService: FriendsService,
     ) {}
   
     @Post('/')
@@ -33,5 +33,7 @@ import { FriendsService } from './friends.service';
     ): Promise<any> {
         return await this.friendsService.findFriends(req.user.id);
     }
+
+
   }
   
