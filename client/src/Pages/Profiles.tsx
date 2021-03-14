@@ -1,5 +1,7 @@
+import {useCallback} from 'react'
 import axios from 'axios';
 import { useQuery, useMutation } from "react-query";
+import {debounce} from 'lodash'
 import { apiPath } from 'Consts/api';
 
 export interface IUserInfo {
@@ -29,9 +31,20 @@ export default function Login() {
         headers: {'authorization': `Bearer ${localStorage.getItem('token')}`}
       }))
 
+    const searchMutation = useMutation((data: {firstName: string, lastName: string}) => axios.post(`${apiPath}/auth/search`, data, {
+        headers: {'authorization': `Bearer ${localStorage.getItem('token')}`}
+      }))
+
+    const onSearch = useCallback(debounce((input) => {
+        console.log("input>>", input.target.value)
+        const [firstName, lastName] = input.target.value.split(" ")
+        searchMutation.mutate({firstName, lastName})
+    }, 300), [searchMutation])
+
     return (
         <>
            <div>All profiles</div>
+           <input placeholder="Search user" onChange={onSearch}/>
            {
            data?.data.map((el: IUserInfo) => {
                return (

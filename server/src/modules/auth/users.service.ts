@@ -10,8 +10,7 @@ export class UsersService {
   ) {}
 
   async findAll(id: number): Promise<any> {
-    console.log("id", id)
-    return this.usersRepository.query('Select * from users Where id!=?', [id]);
+    return this.usersRepository.query('Select * from users Where id!=? Limit 20', [id]);
   }
 
   findOne(id: string): Promise<any> {
@@ -49,10 +48,13 @@ export class UsersService {
   }
 
   async searchByUserName(data: {firstName: string, lastName: string}): Promise<any> {
-    const users = await this.usersRepository.query<string>(`SELECT * FROM users where firstName LIKE '%?%' and lastName LIKE '%?%';`, [data.firstName, data.lastName])
+    const users = await this.usersRepository.query<string>(`SELECT * FROM users  Where firstName LIKE CONCAT('%', ?,  '%') and lastName LIKE CONCAT('%', ?,  '%')  Limit 20`, [data.firstName, data.lastName])
     return users;
 
-    //return this.usersRepository.query<string>(`SELECT * FROM users WHERE email=? AND password=? LIMIT 1`, [data.email, passwordEncrypted], true)
+    // const users = await this.usersRepository.query<string>(query, params)
+    // return users;
+
+    // return this.usersRepository.query<string>(`SELECT * FROM users WHERE email=? AND password=? LIMIT 1`, [data.email, passwordEncrypted], true)
   }
 
   async remove(id: string): Promise<void> {

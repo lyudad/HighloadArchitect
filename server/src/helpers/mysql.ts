@@ -10,10 +10,15 @@ export class MysqlHelper {
 
     public connectDb() {
         this.connection  = mysql.createConnection({
-            host: 'remotemysql.com',
+            // host: 'remotemysql.com',
+            // port: 3306,
+            // user: 'I0O15FzjcX',
+            // password: 'HMMu5XTRtp',
+            // database: 'I0O15FzjcX',
+            host: 'localhost',
             port: 3306,
-            user: 'I0O15FzjcX',
-            password: 'HMMu5XTRtp',
+            user: 'root',
+            password: 'Dl1988555$',
             database: 'I0O15FzjcX',
         });
         this.connection.on('error', (err) => {
